@@ -1,5 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Root from "./routes/Root";
 import Error from "./routes/Error";
@@ -23,69 +24,7 @@ import Carousel from "./components/landing/landing-components/Carousel";
 import Section3 from "./components/landing/landing-components/Section3";
 import ContactUs from "./components/landing/landing-components/Footer";
 import LoginSignUp from "./components/landing/landing-components/login";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Landing />,
-    errorElement: <Error />,
-
-    children: [
-      {
-        index: true,
-        element: <Section1 />,
-      },
-      {
-        path: "learn",
-        element: <Carousel />,
-      },
-      {
-        path: "about",
-        element: <Section3 />,
-      },
-      {
-        path: "contact",
-        element: <ContactUs />,
-      },
-      {
-        path: "login",
-        element: <LoginSignUp />,
-      },
-    ],
-  },
-  {
-    path: "/home",
-    element: <Root />,
-    errorElement: <Error />,
-
-    children: [
-      {
-        path: "",
-        element: <Home />,
-        children: [
-          { path: "", element: <FeedPost /> },
-          { path: "latest", element: <Latest /> },
-          { path: "hot", element: <Hot /> },
-          { path: "discover", element: <Discover /> },
-          { path: "communities", element: <CommunityPage /> },
-        ],
-      },
-      {
-        path: "topic",
-        element: <Topic />,
-        children: [
-          { path: "", element: <TopicFeed /> },
-          { path: "hot-topics", element: <HotTopicsList /> },
-          { path: "all-topics", element: <AllTopics /> },
-          {
-            path: ":topicId",
-            element: <TopicDetails />,
-          },
-        ],
-      },
-    ],
-  },
-]);
+import Info from "./components/landing/landing-components/info/Info";
 
 function App() {
   // const [modalOn, setModalOn] = useState(false);
@@ -97,6 +36,90 @@ function App() {
   // const closeModalHandler = (e) => {
   //   setModalOn(false);
   // };
+
+  const { currentUser } = useSelector((state) => state.user);
+
+  const getLoginRoute = () => {
+    if (currentUser) {
+      return {
+        path: "/info",
+        element: <Info />,
+      };
+    }
+
+    return {
+      path: "/login",
+      element: <LoginSignUp />,
+    };
+  };
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Landing />,
+      errorElement: <Error />,
+
+      children: [
+        {
+          index: true,
+          element: <Section1 />,
+        },
+        {
+          path: "learn",
+          element: <Carousel />,
+        },
+        {
+          path: "about",
+          element: <Section3 />,
+        },
+        {
+          path: "contact",
+          element: <ContactUs />,
+        },
+        getLoginRoute(),
+        // {
+        //   path: "/info",
+        //   element: <Info />,
+        // },
+        // {
+        //   path: "/login",
+        //   element: <LoginSignUp />,
+        // },
+      ],
+    },
+    {
+      path: "/home",
+      element: <Root />,
+      errorElement: <Error />,
+
+      children: [
+        {
+          path: "",
+          element: <Home />,
+          children: [
+            { path: "", element: <FeedPost /> },
+            { path: "latest", element: <Latest /> },
+            { path: "hot", element: <Hot /> },
+            { path: "discover", element: <Discover /> },
+            { path: "communities", element: <CommunityPage /> },
+          ],
+        },
+        {
+          path: "topic",
+          element: <Topic />,
+          children: [
+            { path: "", element: <TopicFeed /> },
+            { path: "hot-topics", element: <HotTopicsList /> },
+            { path: "all-topics", element: <AllTopics /> },
+            {
+              path: ":topicId",
+              element: <TopicDetails />,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
 
   return (
     <RouterProvider router={router}>

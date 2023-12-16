@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 
 import AnimatedPage from "./AnimatedPage";
 import { signin, signup } from "./../api/api";
+import { useDispatch } from "react-redux";
+import { loginSuccess, logout } from "../../../landing-redux/userSlice";
 
 import styles from "./login.module.css";
 
 export default function LoginSignUp() {
   const [action, setAction] = useState("Sign Up");
+  const dispatch = useDispatch();
   const initialValues = {
     name: "",
     email: "",
@@ -69,6 +72,7 @@ export default function LoginSignUp() {
           setFormErrors({ ...formErrors, email: "User already exists" });
           setFormIsValid(false);
         }
+        dispatch(loginSuccess(response.data));
         setIsSubmit(true);
 
         if (response.status === 201) {
@@ -625,7 +629,18 @@ export default function LoginSignUp() {
                     <button
                       type="button"
                       className={`${styles.authenticate_btn} ${styles.home_link_btn}`}
-                      onClick={() => setLogin(false)}
+                    >
+                      <Link to="/info" className={styles.home_link_text}>
+                        CONTINUE
+                      </Link>
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.authenticate_btn} ${styles.home_link_btn}`}
+                      onClick={() => {
+                        setLogin(false);
+                        dispatch(logout());
+                      }}
                     >
                       LOG OUT
                     </button>
