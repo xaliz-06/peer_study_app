@@ -72,7 +72,6 @@ export default function LoginSignUp() {
           setFormErrors({ ...formErrors, email: "User already exists" });
           setFormIsValid(false);
         }
-        dispatch(loginSuccess(response.data));
         setIsSubmit(true);
 
         if (response.status === 201) {
@@ -103,6 +102,7 @@ export default function LoginSignUp() {
 
         if (response.status === 200) {
           console.log("LOG IN SUCCESSFUL");
+          dispatch(loginSuccess(response.data));
           setLogin(true);
         }
       } catch (error) {

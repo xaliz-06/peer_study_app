@@ -1,5 +1,9 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Root from "./routes/Root";
@@ -25,6 +29,7 @@ import Section3 from "./components/landing/landing-components/Section3";
 import ContactUs from "./components/landing/landing-components/Footer";
 import LoginSignUp from "./components/landing/landing-components/login";
 import Info from "./components/landing/landing-components/info/Info";
+import ProfilePage from "./components/profile/ProfilePage";
 
 function App() {
   // const [modalOn, setModalOn] = useState(false);
@@ -41,14 +46,20 @@ function App() {
 
   const getLoginRoute = () => {
     if (currentUser) {
-      return {
-        path: "/info",
-        element: <Info />,
-      };
+      return (
+        {
+          path: "login",
+          element: <LoginSignUp />,
+        },
+        {
+          path: "info",
+          element: <Info />,
+        }
+      );
     }
 
     return {
-      path: "/login",
+      path: "login",
       element: <LoginSignUp />,
     };
   };
@@ -76,15 +87,15 @@ function App() {
           path: "contact",
           element: <ContactUs />,
         },
-        getLoginRoute(),
-        // {
-        //   path: "/info",
-        //   element: <Info />,
-        // },
-        // {
-        //   path: "/login",
-        //   element: <LoginSignUp />,
-        // },
+        // getLoginRoute(),
+        {
+          path: "info",
+          element: <Info />,
+        },
+        {
+          path: "login",
+          element: <LoginSignUp />,
+        },
       ],
     },
     {
@@ -116,6 +127,10 @@ function App() {
               element: <TopicDetails />,
             },
           ],
+        },
+        {
+          path: "profile",
+          element: <ProfilePage />,
         },
       ],
     },

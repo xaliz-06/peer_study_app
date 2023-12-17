@@ -2,7 +2,7 @@
   padding: 0.8rem 2rem;
 }
 
-input {
+.search_bar {
   font-family: inherit;
   width: 45vw;
   padding: 0.7rem;
@@ -12,7 +12,7 @@ input {
   transition: all 0.2s ease-in-out;
 }
 
-input:focus {
+.search_bar:focus {
   border-color: 2.5px #0087ca;
   outline: 3.5px solid #0087ca;
 }
